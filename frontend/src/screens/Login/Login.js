@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../actions/auth";
+import './styles.css'
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
