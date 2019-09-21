@@ -30,8 +30,8 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload.user,
-        myprofile: action.payload.myprofile
+        user: action.user,
+        myprofile: action.myprofile
       };
 
     case LOGIN_SUCCESS:

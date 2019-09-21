@@ -19,12 +19,12 @@ export const loadUser = myprofile => (dispatch, getState) => {
     .then(res => {
       dispatch({
         type: USER_LOADED,
-        payload: res.data
+        user: res.data,
+        myprofile: myprofile
       });
     })
 
     .catch(err => {
-      console.log(err.response);
       dispatch({
         type: GET_ERRORS
       });
@@ -48,11 +48,8 @@ export const login = (username, password) => dispatch => {
     .then(res => {
       dispatch({
         type: LOGIN_SUCCESS,
-
         payload: res.data
-      });
-      dispatch(loadUser(res.data.myprofile));
-      window.location.href = `/profilebyHandle/${res.data.myprofile.id}`;
+      }).then(dispatch(loadUser(res.data.myprofile)));
     })
     .catch(err => {
       dispatch({
@@ -143,8 +140,9 @@ export const logout = () => (dispatch, getState) => {
         type: LOGOUT_SUCCESS
       });
     })
+
     .catch(err => {
-      console.log(err.response);
+      console.log(err);
     });
 };
 
