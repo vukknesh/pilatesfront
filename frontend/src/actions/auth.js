@@ -17,6 +17,7 @@ export const loadUser = myprofile => (dispatch, getState) => {
   axios
     .get(api + "api/auth/user", tokenConfig(getState))
     .then(res => {
+      console.log(res.data);
       dispatch({
         type: USER_LOADED,
         user: res.data,
@@ -46,10 +47,11 @@ export const login = (username, password) => dispatch => {
   axios
     .post(api + "api/auth/login", body, config)
     .then(res => {
+      console.log(res.data);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
-      }).then(dispatch(loadUser(res.data.myprofile)));
+      }).then(res => dispatch(loadUser(res.data.myprofile)));
     })
     .catch(err => {
       dispatch({

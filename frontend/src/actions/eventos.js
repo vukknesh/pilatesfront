@@ -11,11 +11,10 @@ import {
   GET_ERRORS,
   CLEAR_ERRORS
 } from "./types";
-import { createMessage } from "./messages";
 const api = "http://67.207.91.188:1234/";
 //add post
 
-export const addEvent = (eventData, token, history) => dispatch => {
+export const addEvent = (eventData, token) => dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -28,13 +27,10 @@ export const addEvent = (eventData, token, history) => dispatch => {
   axios
     .post(api + "api/eventos/create/", eventData, config)
     .then(res => {
-      dispatch(createMessage({ eventAdd: "Evento criado com sucesso!" }));
-
       dispatch({
         type: ADD_EVENT,
         payload: res.data
       });
-      dispatch(history.push(`/find-events/`));
     })
 
     .catch(err => {
@@ -165,7 +161,6 @@ export const deleteEvent = (id, token, history) => dispatch => {
 
     .then(res => {
       history.push("/my-events");
-      dispatch(createMessage({ eventDelete: "Evento removido com sucesso!" }));
       dispatch({
         type: DELETE_EVENT,
         payload: id

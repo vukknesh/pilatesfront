@@ -1,4 +1,3 @@
-export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
@@ -23,3 +22,6 @@ export const DELETE_EVENT = "DELETE_EVENT";
 export const EVENT_LOADING = "EVENT_LOADING";
 export const CLEAR_EVENTS = "CLEAR_EVENTS";
 export const CLEAR_EVENT = "CLEAR_EVENT";
+
+export const GET_ERRORS = "GET_ERRORS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";

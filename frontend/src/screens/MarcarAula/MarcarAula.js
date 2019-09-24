@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import moment from "moment";
+import { DateTimePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 
-import {
-  MuiPickersUtilsProvider, KeyboardTimePicker,
-  KeyboardDatePicker
-} from 'material-ui-pickers/MuiPickersUtilsProvider'
+const mapState = state => ({
+  token: state.auth.token
+});
+
 const MarcarAula = () => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = React.useState(
+    moment(new Date().today).format()
+  );
+  const { token } = useSelector(mapState);
   const [click, setClick] = useState(false);
   const [aulas, setAulas] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function buscarEventos() {
       const res = await axios.get("http://67.207.91.188:1234/api/eventos");
@@ -19,58 +25,47 @@ const MarcarAula = () => {
       setAulas(res.data);
     }
     buscarEventos();
-  }, [click]);
+    console.log(moment(selectedDate).format());
+  }, [selectedDate]);
   const handleDateChange = date => {
     setSelectedDate(date);
   };
+  const handleMarcarAula = () => {
+    console.log("addEvent");
+    setLoading(true);
+    const eventData = {
+      comentario: "teste",
+      starting_date: selectedDate,
+      ending_date: moment(selectedDate).add(1, "hours")
+    };
+    console.log(token);
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    if (token) {
+      config.headers["Authorization"] = `Token ${token}`;
+    }
+    async function addEvento() {
+      const res = await axios.post(
+        "http://67.207.91.188:1234/api/eventos/create/",
+        eventData,
+        config
+      );
+      console.log(res.data);
+      setAulas(res.data);
+    }
+    addEvento();
+    setLoading(false);
+  };
   return (
     <div>
-      <h1>Teste</h1>
-      <button onClick={() => setClick(!click)}>Click</button>
+      <h1>Marcar Aula</h1>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container justify="space-around">
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="dd/MM/yyyy"
-            margin="normal"
-            id="date-picker-inline"
-            label="Date picker inline"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-          <KeyboardDatePicker
-            margin="normal"
-            id="date-picker-dialog"
-            label="Date picker dialog"
-            format="dd/MM/yyyy"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-          <KeyboardTimePicker
-            margin="normal"
-            id="time-picker"
-            label="Time picker"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change time',
-            }}
-          />
-        </Grid>
+        <DateTimePicker value={selectedDate} onChange={handleDateChange} />
       </MuiPickersUtilsProvider>
-      {aulas.map(aula => (
-        <div key={aula.id}>
-          <h1>{aula.comentario}</h1>
-          <h1>{aula.user.first_name}</h1>
-        </div>
-      ))}
+      <button onClick={() => handleMarcarAula()}>Add aula</button>
     </div>
   );
 };

@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import BottomMenu from "./components/menu/BottomMenu";
+import MarcarAula from "./screens/MarcarAula/MarcarAula";
 
 import asyncComponent from "./AsyncComponent";
 const AsyncLogin = asyncComponent(() => import("./screens/Login/Login"));
 
 const AsyncProfile = asyncComponent(() => import("./screens/Profile/Profile"));
-const AsyncMarcarAula = asyncComponent(() =>
-  import("./screens/MarcarAula/MarcarAula")
-);
-
+// const AsyncMarcarAula = asyncComponent(() =>
+//   import("./screens/MarcarAula/MarcarAula")
+// );
 const BaseRouter = () => {
   return (
     <>
@@ -19,7 +19,7 @@ const BaseRouter = () => {
       </Switch>
       <Switch>
         <Route exact path="/profile" component={AsyncProfile} />
-        <Route exact path="/marcar-aula" component={AsyncMarcarAula} />
+        <Route exact path="/marcar-aula" component={MarcarAula} />
       </Switch>
     </>
   );
