@@ -41,6 +41,14 @@ export default function Profile(props) {
   const handleButtonRelease = () => {
     setButtonPressTimer(clearTimeout(buttonPressTimer));
   };
+  const remarcadasRestantes = () => {
+    switch (myprofile.plano) {
+      case "8 Aulas":
+        return myprofile.aulas_remarcadas - 3;
+      default:
+        return 2;
+    }
+  };
 
   return (
     <div style={{ height: "93vh", margin: "0" }}>
@@ -63,6 +71,9 @@ export default function Profile(props) {
             }}
           >
             <p>{user.first_name}</p>
+            <small>{myprofile.plano}</small>
+            <br />
+            <small>{remarcadasRestantes}</small>
           </div>
         </div>
       )}

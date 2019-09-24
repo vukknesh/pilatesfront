@@ -17,11 +17,11 @@ export const loadUser = myprofile => (dispatch, getState) => {
   axios
     .get(api + "api/auth/user", tokenConfig(getState))
     .then(res => {
-      console.log(res.data);
+      console.log(res.data, "load user");
       dispatch({
         type: USER_LOADED,
-        user: res.data,
-        myprofile: myprofile
+        user: res.data.user,
+        myprofile: res.data.myprofile
       });
     })
 
